@@ -35,7 +35,9 @@ export default class N3Lexer {
     // ## Regular expressions
     // It's slightly faster to have these as properties than as in-scope variables
     this._iri = /^<((?:[^ <>{}\\]|\\[uU])+)>[ \t]*/; // IRI with escape sequences; needs sanity check after unescaping
-    this._unescapedIri = /^<([^\x00-\x20<>\\"\{\}\|\^\`]*)>[ \t]*/; // IRI without escape sequences; no unescaping
+    // this._unescapedIri = /^<([^\x00-\x20<>\\"\{\}\|\^\`]*)>[ \t]*/; // IRI without escape sequences; no unescaping
+    // 半角スペースを除外
+    this._unescapedIri = /^<([^\x00-\x19<>\\"\{\}\|\^\`]*)>[ \t]*/; // IRI without escape sequences; no unescaping
     // this._simpleQuotedString = /^"([^"\\\r\n]*)"(?=[^"])/; // string without escape sequences
     // this._simpleApostropheString = /^'([^'\\\r\n]*)'(?=[^'])/;
     this._langcode = /^@([a-z]+(?:-[a-z0-9]+)*)(?=[^a-z0-9\-])/i;
@@ -57,7 +59,7 @@ export default class N3Lexer {
     // ja.dbpedia.org の Turtleファイルの処理に失敗するために以下の修正
     this._simpleQuotedString = /^"([^"\\\\r\\n]*)"(?=[^"])/; // string without escape sequences
     this._simpleApostropheString = /^'([^'\\\\r\\n]*)'(?=[^'])/;
-    this._prefixed = 
+    this._prefixed =
 /^((?:[A-Za-z\u0080-\uffff]|[\ud800-\udb7f][\udc00-\udfff])(?:\.?[\-0-9A-Z_a-z\u0080-\uffff]|[\ud800-\udb7f][\udc00-\udfff])*)?:((?:(?:[0-:A-Z_a-z\u0080-\uffff]|[\ud800-\udb7f][\udc00-\udfff]|%[0-9a-fA-F]{2}|\\[!#-\/;=?\-@_~])(?:(?:[\.\-0-:A-Z_a-z\u0080-\uffff]|[\ud800-\udb7f][\udc00-\udfff]|%[0-9a-fA-F]{2}|\\[!#-\/;=?\-@_~])*(?:[\-0-:A-Z_a-z\u0080-\uffff]|[\ud800-\udb7f][\udc00-\udfff]|%[0-9a-fA-F]{2}|\\[!#-\/;=?\-@_~]))?)?)(?:[ \t]+|(?=\.?[,;!\^\s#()\[\]\{\}"'<]))/;
 
 
